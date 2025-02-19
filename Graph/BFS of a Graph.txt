@@ -1,0 +1,78 @@
+import java.util.*;
+
+class Main {
+    // Define the Edge class to represent an edge in the graph
+    static class Edge {
+        int src;  // Source vertex
+        int dest; // Destination vertex
+
+        // Constructor to initialize source and destination
+        public Edge(int s, int d) {
+            this.src = s;
+            this.dest = d;
+        }
+    }
+
+    // Method to create the graph
+    public static void createGraph(ArrayList<Edge> graph[]) {
+        // Initialize each element of the graph array with an ArrayList
+        for (int i = 0; i < graph.length; i++) {
+            graph[i] = new ArrayList<Edge>();
+        }
+
+        // Add edges to the graph
+        graph[0].add(new Edge(0, 1));
+        graph[0].add(new Edge(0, 2));
+
+        graph[1].add(new Edge(1, 0));
+        graph[1].add(new Edge(1, 3));
+
+        graph[2].add(new Edge(2, 0));
+        graph[2].add(new Edge(2, 4));
+
+        graph[3].add(new Edge(3, 1));
+        graph[3].add(new Edge(3, 4));
+        graph[3].add(new Edge(3, 5));
+
+        graph[4].add(new Edge(4, 2));
+        graph[4].add(new Edge(4, 3));
+        graph[4].add(new Edge(4, 5));
+
+        graph[5].add(new Edge(5, 3));
+        graph[5].add(new Edge(5, 4));
+        graph[5].add(new Edge(5, 6));
+
+        graph[6].add(new Edge(6, 5));
+    }
+
+    // Method to perform BFS traversal
+    public static void bfs(ArrayList<Edge> graph[], int V) {
+        Queue<Integer> q = new LinkedList<>(); // Queue for BFS
+        boolean vis[] = new boolean[V]; // Array to keep track of visited vertices
+        q.add(0); // Start BFS from vertex 0
+        vis[0] = true; // Mark the starting node as visited
+
+        // Loop until the queue is empty
+        while (!q.isEmpty()) {
+            int curr = q.remove(); // Remove the front element from the queue
+            System.out.print(curr + " "); // Print the current vertex
+
+            // Iterate through all the adjacent vertices of the current vertex
+            for (int i = 0; i < graph[curr].size(); i++) {
+                Edge e = graph[curr].get(i);
+                if (!vis[e.dest]) { // If the adjacent vertex is not visited
+                    q.add(e.dest); // Add it to the queue
+                    vis[e.dest] = true; // Mark it as visited
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int V = 7; // Number of vertices
+        ArrayList<Edge> graph[] = new ArrayList[V]; // Create an array of ArrayLists to represent the graph
+        createGraph(graph); // Create the graph
+        bfs(graph, V); // Perform BFS traversal
+        System.out.println(); // Print a newline at the end
+    }
+}

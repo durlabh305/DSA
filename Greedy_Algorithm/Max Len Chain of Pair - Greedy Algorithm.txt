@@ -1,0 +1,28 @@
+import java.util.*;
+
+class Main {
+    public static void main (String[] args) {
+        // Define a 2D array of pairs
+        int pairs[][] = {{5, 24}, {39, 60}, {5, 28}, {27, 40}, {50, 90}};
+        
+        // Sort the pairs based on the second element of each pair
+        Arrays.sort(pairs, Comparator.comparingDouble(o -> o[1]));
+        
+        // Initialize count of chains and end of the first pair
+        int count = 1;
+        int pairEnd = pairs[0][1];
+        
+        // Iterate through the pairs to find the maximum length of chain
+        // Start from the second pair (i = 1) to avoid checking the first pair against itself
+        for(int i = 1; i < pairs.length; i++) {
+            // If the current pair can be chained with the previous one
+            if(pairs[i][0] > pairEnd) {
+                count++; // Increase the count of chains
+                pairEnd = pairs[i][1]; // Update the end of the current pair
+            }
+        }
+        
+        // Print the maximum length of chain
+        System.out.println("Max length of chain = " + count);
+    }
+}

@@ -1,0 +1,49 @@
+// Minumum cost of cutting a chocolate - Greedy Algorithm (Cut have the price of their own)
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        int n = 4, m = 6; // Dimensions of the board
+        Integer costVer[] = {2, 1, 3, 1, 4}; // Costs of vertical cuts
+        Integer costHor[] = {4, 1, 2}; // Costs of horizontal cuts
+        
+        // Sorting the costs in descending order
+        Arrays.sort(costVer, Collections.reverseOrder());
+        Arrays.sort(costHor, Collections.reverseOrder());
+        
+        int h = 0, v = 0; // Indices for horizontal and vertical cuts
+        int hp = 1, vp = 1; // Number of horizontal and vertical pieces
+        int cost = 0; // Total cost
+        
+        // Loop until all cuts are made
+        while (h < costHor.length && v < costVer.length) {
+            // Choose the more expensive cut to minimize total cost
+            if (costVer[v] <= costHor[h]) {
+                cost += (costHor[h] * vp); // Add cost of horizontal cut
+                h++;
+                hp++; // Increase number of horizontal pieces
+            } else {
+                cost += (costVer[v] * hp); // Add cost of vertical cut
+                v++;
+                vp++; // Increase number of vertical pieces
+            }
+        }
+        
+        // Process remaining horizontal cuts
+        while (h < costHor.length) {
+            cost += (costHor[h] * vp);
+            h++;
+            hp++;
+        }
+        
+        // Process remaining vertical cuts
+        while (v < costVer.length) {
+            cost += (costVer[v] * hp);
+            v++;
+            vp++;
+        }
+        
+        // Print the minimum cost of cuts
+        System.out.println("Minimum cost of cut = " + cost);
+    }
+}

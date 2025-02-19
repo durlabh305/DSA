@@ -1,0 +1,53 @@
+// Job Sequencing Problem, To calculate max profit, max job can be done, max which job can be done
+
+import java.util.*;
+
+class Main {
+    int deadline;
+    int profit;
+    int id;
+    
+    // Constructor to initialize job details
+    public Main(int i, int d, int p){
+        id = i;
+        deadline = d;
+        profit = p;
+    }
+    
+    public static void main(String[] args) {
+        // Array containing job deadlines and profits
+        int jobsInfo[][] = {{4, 20}, {1, 10}, {1, 40}, {1, 30}};
+        ArrayList<Main> jobs = new ArrayList<>();
+        
+        // Creating job objects and adding them to the list
+        for(int i=0; i<jobsInfo.length; i++){
+            jobs.add(new Main(i, jobsInfo[i][0], jobsInfo[i][1]));
+        }
+        
+        // Sorting jobs based on profit in descending order
+        Collections.sort(jobs, (a,b) -> b.profit-a.profit);
+        
+        ArrayList<Integer> seq = new ArrayList<>();
+        int time = 0;
+	int pt = 0;
+        
+        // Selecting jobs to maximize profit within deadlines
+        for(int i=0; i<jobs.size(); i++){
+            Main curr = jobs.get(i);
+            if(curr.deadline > time){
+                seq.add(curr.id);
+                time++;
+		pt += curr.profit;
+            }
+        }
+        
+        // Printing the maximum number of jobs that can be done
+        System.out.println("Maximum job can be done = " + seq.size());
+        
+        // Printing the sequence of job IDs
+        for(int i=0; i<seq.size(); i++){
+            System.out.print(seq.get(i) + " ");
+        }
+        System.out.println();
+    }
+}

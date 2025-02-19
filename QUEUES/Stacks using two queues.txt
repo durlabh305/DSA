@@ -1,0 +1,95 @@
+import java.util.*;
+
+public class Main{
+  
+  static class Stack{
+    static Queue<Integer> q1 = new LinkedList<>(); // Primary queue
+    static Queue<Integer> q2 = new LinkedList<>(); // Auxiliary queue
+    
+    // Check if the stack is empty
+    public static boolean isEmpty(){
+      return q1.isEmpty() && q2.isEmpty();
+    }
+    
+    // add- O(1)
+    public static void push(int data){
+      if(!q1.isEmpty()){
+        q1.add(data); // Add to q1 if q1 is not empty
+      }
+      else{
+        q2.add(data); // Add to q2 if q1 is empty
+      }
+    }
+    
+    // Remove - O(n) 2 while loop (n + n = 2n)
+    public static int pop(){
+      if(isEmpty()){
+        System.out.println("Stack is Empty");
+        return -1;
+      }
+      int top = -1;
+      
+      if(!q1.isEmpty()){
+        while(!q1.isEmpty()){
+          top = q1.remove();
+          // Agar q hamara empty hojayega toh top me q1 ki last value store hogi
+          if(q1.isEmpty()){
+            break;
+          }
+          // Nahi toh q2. me values store hoti rahegi
+          q2.add(top);
+        }
+      }
+      else{
+        if(!q2.isEmpty()){
+          while(!q2.isEmpty()){
+            top = q2.remove();
+            if(q2.isEmpty()){
+              break;
+            }
+            q1.add(top);
+          }
+        }
+      }
+      return top;
+    }
+    
+    // Peek - O(n)
+    public static int peek(){
+       if(isEmpty()){
+        System.out.println("Stack is Empty");
+        return -1;
+      }
+      int top = -1;
+      
+      if(!q1.isEmpty()){
+        while(!q1.isEmpty()){
+          top = q1.remove();
+          // top par values add hote rahegi
+          q2.add(top);
+        }
+      }
+      else{
+        if(!q2.isEmpty()){
+          while(!q2.isEmpty()){
+            top = q2.remove();
+            q1.add(top);
+          }
+        }
+      }
+      return top;
+  }
+}
+  public static void main(String[] args){
+    Stack s = new Stack();
+    //Queue<Integer> q = new ArrayDeque<>();
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    
+    while(!s.isEmpty()){
+      System.out.println(s.peek());
+      s.pop();
+    }
+  }
+}

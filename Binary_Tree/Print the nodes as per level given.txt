@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Main {
+    // Define a static nested class Node to represent each node in the binary tree
+    static class Node {
+        int data; // Data stored in the node
+        Node left, right; // Pointers to the left and right children
+        
+        // Constructor to initialize the node with data and null children
+        public Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    // Method to print all nodes at the k-th level of the binary tree
+    public static void kLevel(Node root, int level, int k) {
+        // Base case: if the current node is null, return
+        if (root == null) {
+            return;
+        }
+        // If the current level matches k, print the node's data
+        if (level == k) {
+            System.out.print(root.data + " ");
+            return;
+        }
+        // Recursively call the method for the left and right children, incrementing the level
+        kLevel(root.left, level + 1, k);
+        kLevel(root.right, level + 1, k);
+    }
+    
+    public static void main(String[] args) {
+        // Create the root node and its children to form the binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        
+        int k = 3; // Define the level to print nodes from
+        kLevel(root, 1, k); // Call the method to print nodes at level k
+    }
+}

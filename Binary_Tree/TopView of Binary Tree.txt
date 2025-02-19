@@ -1,0 +1,86 @@
+import java.util.*;
+
+class Main {
+    // Define the Node class to represent each node in the binary tree
+    static class Node {
+        int data;
+        Node left, right;
+
+        // Constructor to initialize the node with data and set left and right children to null
+        public Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    // Define the Info class to store a node and its horizontal distance (hd) from the root
+    static class Info {
+        Node node;
+        int hd;
+
+        // Constructor to initialize the Info object with a node and its horizontal distance
+        public Info(Node node, int hd) {
+            this.node = node;
+            this.hd = hd;
+        }
+
+        // Method to print the top view of the binary tree
+        public static void topView(Node root) {
+            // Queue to perform level order traversal
+            Queue<Info> q = new LinkedList<>();
+            // HashMap to store the first node at each horizontal distance
+            HashMap<Integer, Node> map = new HashMap<>();
+
+            int min = 0, max = 0;
+            // Add the root node with horizontal distance 0 to the queue
+            q.add(new Info(root, 0));
+            q.add(null); // Marker for end of level
+
+            while (!q.isEmpty()) {
+                Info curr = q.remove();
+                if (curr == null) {
+                    // If we reach the end of a level
+                    if (q.isEmpty()) {
+                        break;
+                    } else {
+                        q.add(null); // Add marker for the next level
+                    }
+                } else {
+                    // If this horizontal distance is being covered for the first time
+                    if (!map.containsKey(curr.hd)) {
+                        map.put(curr.hd, curr.node);
+                    }
+                    // Add the left child with horizontal distance -1
+                    if (curr.node.left != null) {
+                        q.add(new Info(curr.node.left, curr.hd - 1));
+                        min = Math.min(min, curr.hd - 1);
+                    }
+                    // Add the right child with horizontal distance +1
+                    if (curr.node.right != null) {
+                        q.add(new Info(curr.node.right, curr.hd + 1));
+                        max = Math.max(max, curr.hd + 1);
+                    }
+                }
+            }
+
+            // Print the top view of the binary tree
+            for (int i = min; i <= max; i++) {
+                System.out.print(map.get(i).data + " ");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create the binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        // Call the topView method to print the top view of the binary tree
+        Info.topView(root);
+    }
+}

@@ -1,0 +1,132 @@
+import java.util.*;
+
+class Main {
+    
+    // Define the Node class representing each node in the binary tree
+    static class Node{
+        int data;
+        Node left, right;
+        
+        // Constructor to initialize the node with data and null children
+        public Node(int data){
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    // Method to count the total number of nodes in the binary tree
+    public static int count(Node root){
+        if (root == null){
+            return 0;
+        }
+        int lc = count(root.left); // Count nodes in the left subtree
+        int rc = count(root.right); // Count nodes in the right subtree
+        return lc + rc + 1; // Total count is left count + right count + 1 (current node)
+    }
+    
+    // Method to calculate the sum of all node values in the binary tree
+    public static int sum(Node root){
+        if(root == null){
+            return 0;
+        }
+        int ls = sum(root.left); // Sum of left subtree
+        int rs = sum(root.right); // Sum of right subtree
+        return ls + rs + root.data; // Total sum is left sum + right sum + current node's data
+    }
+    
+    // Method to perform preorder traversal of the binary tree
+    public static void preorder(Node root){
+        if (root == null){
+            return;
+        }
+        System.out.print(root.data + " "); // Visit the root node
+        preorder(root.left); // Traverse the left subtree
+        preorder(root.right); // Traverse the right subtree
+    }
+    
+    // Method to perform inorder traversal of the binary tree
+    public static void inorder(Node root){
+        if(root == null){
+            return;
+        }
+        inorder(root.left); // Traverse the left subtree
+        System.out.print(root.data + " "); // Visit the root node
+        inorder(root.right); // Traverse the right subtree
+    }
+    
+    // Method to perform postorder traversal of the binary tree
+    public static void postorder(Node root){
+        if(root == null){
+            return;
+        }
+        postorder(root.left); // Traverse the left subtree
+        postorder(root.right); // Traverse the right subtree
+        System.out.print(root.data + " "); // Visit the root node
+    }
+    
+    // Method to calculate the height of the binary tree
+    public static int height(Node root){
+        if (root == null){
+            return 0;
+        }
+        int lh = height(root.left); // Height of the left subtree
+        int rh = height(root.right); // Height of the right subtree
+        return Math.max(lh, rh) + 1; // Height is the maximum of left and right subtree heights + 1
+    }
+    
+    // Method to find the lowest common ancestor (LCA) of two nodes in the binary tree
+    public static Node lca(Node root, int n1, int n2){
+        if(root == null || root.data == n1 || root.data == n2){
+            return root;
+        }
+        
+        Node leftLca = lca(root.left, n1, n2); // Find LCA in the left subtree
+        Node rightLca = lca(root.right, n1, n2); // Find LCA in the right subtree
+        
+        if(rightLca == null){
+            return leftLca;
+        }
+        if(leftLca == null){
+            return rightLca;
+        }
+        
+        return root; // If both left and right LCAs are non-null, the current node is the LCA
+    }
+    
+    public static void main(String[] args) {
+        // Create the binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(9);
+        
+        // Print the count of all nodes
+        System.out.println("Count of all nodes = " + count(root));
+        
+        // Print the sum of all nodes
+        System.out.println("Sum of all nodes = " + sum(root));
+        
+        // Perform and print preorder traversal
+        preorder(root);
+        System.out.println();
+        
+        // Perform and print inorder traversal
+        inorder(root);
+        System.out.println();
+        
+        // Perform and print postorder traversal
+        postorder(root);
+        System.out.println();
+        
+        // Print the height of the tree
+        System.out.print("Height of the root = " + height(root));
+        System.out.println();
+        
+        // Find and print the lowest common ancestor of nodes 4 and 9
+        System.out.print("Lowest Common Ancestor = " + lca(root, 4, 9).data);
+    }
+}

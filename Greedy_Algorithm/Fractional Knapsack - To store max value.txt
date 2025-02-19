@@ -1,0 +1,42 @@
+// Fractional Knapsack - To store max value according to the total weight
+
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        // Values and weights of the items
+        int val[] = {60, 100, 120};
+        int weight[] = {10, 20, 30};
+        // Maximum capacity of the knapsack
+        int W = 50;
+        
+        // Array to store the ratio of value to weight and the index of each item
+        double ratio[][] = new double[val.length][2];
+        for(int i = 0; i < val.length; i++){
+            ratio[i][0] = i; // Store index of the item
+            ratio[i][1] = val[i] / (double) weight[i]; // Store value to weight ratio
+        }
+        
+        // Sort the items based on the value to weight ratio in ascending order
+        Arrays.sort(ratio, Comparator.comparingDouble(o -> o[1]));
+        
+        int capacity = W; // Remaining capacity of the knapsack
+        int finValue = 0; // Final value of items in the knapsack
+        
+        // Iterate through the items in descending order of value to weight ratio
+        for(int i = ratio.length - 1; i >= 0; i--){
+            int idx = (int) ratio[i][0]; // Get the index of the item
+            if(capacity >= weight[idx]){ // If the knapsack can carry the whole item
+                finValue += val[idx]; // Add the full value of the item
+                capacity -= weight[idx]; // Decrease the capacity by the weight of the item
+            } else { // If the knapsack can only carry a fraction of the item
+                finValue += (ratio[i][1] * capacity); // Add the fractional value of the item
+                capacity = 0; // Knapsack is full
+                break; // Exit the loop as the knapsack is full
+            }
+        }
+        
+        // Print the final value of items in the knapsack
+        System.out.println("Final Value = " + finValue);
+    }
+}
