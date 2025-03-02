@@ -2,50 +2,62 @@ import java.util.*;
 
 class Main {
     // Define a static nested class Node to represent each node in the binary tree
-    static class Node{
+    static class Node {
         int data;
         Node left, right;
-        
+
         // Constructor to initialize the node with data and set left and right children to null
-        public Node(int data){
+        public Node(int data) {
             this.data = data;
             this.left = null;
             this.right = null;
         }
     }
-    
+
     // Method to find the k-th ancestor of a given node in the binary tree
-    public static int KAncestor(Node root, int n, int k){
+    public static int KAncestor(Node root, int n, int k) {
         // Base case: if the root is null, return -1 indicating the node is not found
-        if(root == null){
+        if (root == null) {
             return -1;
         }
         // If the current node is the target node, return 0 indicating the node is found
-        if(root.data == n){
+        if (root.data == n) {
             return 0;
         }
         // Recursively search for the target node in the left and right subtrees
         int leftDist = KAncestor(root.left, n, k);
         int rightDist = KAncestor(root.right, n, k);
-        
+
         // If the target node is not found in both subtrees, return -1
-        if(leftDist == -1 && rightDist == -1){
+        if (leftDist == -1 && rightDist == -1) {
             return -1;
         }
         // Find the maximum distance from the target node in the left or right subtree
         int max = Math.max(leftDist, rightDist);
-        
+
         // If the distance from the target node is equal to k, print the current node's data
-        if(max + 1 == k){
+        if (max + 1 == k) {
             System.out.println(root.data);
         }
-        
+
         // Return the distance from the target node
         return max + 1;
     }
-    
+
     public static void main(String[] args) {
         // Create the binary tree
         Node root = new Node(1);
         root.left = new Node(2);
         root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+
+        // Example usage: Find the 2nd ancestor of node with value 4
+        int k = 2;
+        int nodeValue = 4;
+        System.out.println("The " + k + "-th ancestor of node " + nodeValue + " is:");
+        KAncestor(root, nodeValue, k);
+    }
+}
